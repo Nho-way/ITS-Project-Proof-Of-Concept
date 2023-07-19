@@ -1,5 +1,5 @@
-import tkinter as tk
-from tkinter import messagebox
+#import tkinter as tk
+#from tkinter import messagebox
 import subprocess
 import speedtest as sp
 import platform
@@ -27,8 +27,8 @@ def get_info():
         upload = tester.upload()
         print(upload/1000000, "Mbps upload \n")
     except Exception as E:
-        print("Error running speedtest", E)
-    
+        print("Was not able to run Speed Test")
+
     #Get Mac Address
     try:
         print("Getting Mac Address...")
@@ -43,25 +43,25 @@ def get_info():
             raise Exception("Didn't Find Mac Address")
         print(mac, "\n")
     except Exception as E:
-        print("Error getting Mac Address: ", E)
+        print("Was not able to get the Mac Address")
 
     #Get MacOS Version
     try:
         ops = platform.mac_ver()
-        print("macOS version:", ops[0], "\n") 
+        print("macOS version:", ops[0], "\n")
         numbers = ops[0].split(".")
         if numbers[0] == 13 and numbers[1] == 0:
-            print("Consider updating your laptop as this version of OS has outdated AirDrop settings") 
+            print("Consider updating your laptop as this version of OS has outdated AirDrop settings")
     except Exception as E:
-        print("Error getting MacOS Version: ", E)
-    
+        print("Was not able to get OS Info")
+
     try:
         response = requests.get('https://ipinfo.io/ip')
         print("Getting Public IP...")
         public_ip = response.text.strip()
-        print(public_ip, "\n")    
+        print(public_ip, "\n")
     except Exception as e:
-        print("Error getting public IP: ", e)
+        print("Was not able to retrieve public IP")
 
     try:
         chip = platform.processor()
@@ -70,9 +70,9 @@ def get_info():
             if os.path.exists(app_path):
                 print("You are using an ARM Processor: Try Uninstalling AnyConnect and downloading the App Store Version")
     except Exception as E:
-        print("Error getting processor: ", E)
+        print("Was not able to get processor information.")
 
-   
+
 
 """
 Forgets all networks with the networksetup command
@@ -109,10 +109,10 @@ def network_configuration():
             for i in vpns:
                 print(i)
     except Exception as E:
-        print("Error getting VPNs: ", E) 
+        print("Error getting VPNs: ", E)
 
     network_service = "Wi-Fi"
-    try: 
+    try:
         subprocess.run(["networksetup", "-setdhcp", network_service])
         print("Set IPv4 to Using DHCP\n")
     except Exception as E:
@@ -159,13 +159,13 @@ def network_configuration():
 Deletes auth.ucsd.edu certificate
 """
 def del_certificate():
-    try: 
+    try:
         command = ['security', 'delete-certificate', '-c', 'auth.ucsd.edu']
         subprocess.run(command, check=True)
         print("Removed Auth Certificate")
     except Exception as e:
         print(" ")
-    
+
 
 
 """
@@ -227,40 +227,40 @@ def main():
         choice = input(message)
 
         print("####################################################################################")
-        if choice == "":         
+        if choice == "":
             get_info()
             forget_networks()
             network_configuration()
             del_certificate()
-            del_plist()   
-           
-        elif choice == "1":         
+            del_plist()
+
+        elif choice == "1":
             get_info()
-            
-        elif choice == "2":         
+
+        elif choice == "2":
             forget_networks()
-            
-        elif choice == "3":           
+
+        elif choice == "3":
             network_configuration()
-            
-        elif choice == "4":          
+
+        elif choice == "4":
             del_certificate()
 
-        elif choice == "5": 
+        elif choice == "5":
             del_plist()
 
         else:
             print("Please enter a number 1 through 5 or press enter. ")
         print("\n")
-        
+
         next = input("Would you like to do more? (Y/N) ")
         if next == "N" or next == "n":
             repeat = False
         print("####################################################################################")
         print("\n \n")
-        
 
 
+"""
 def create_button(root, text, command):
     button = tk.Button(root, text=text, command=command)
     button.pack(pady=5)
@@ -277,7 +277,7 @@ create_button(root, "Delete P-Lists", del_plist)
 create_button(root, "Make MacOS Roam", roam)
 
 root.mainloop()
+"""
 
-
-#if __name__ == "__main__":
-#    main()
+if __name__ == "__main__":
+    main()
